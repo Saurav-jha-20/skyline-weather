@@ -1,0 +1,457 @@
+/* =========================================================
+   SKYLINE — Weather Station
+   Design tokens
+   ========================================================= */
+:root {
+  --navy-deep: #1B2A4A;
+  --navy-soft: #24365C;
+  --sky-pale: #F5F7FA;
+  --panel-white: #FFFFFF;
+  --amber-sun: #E8A33D;
+  --teal-cool: #4F8A8B;
+  --charcoal: #232B3A;
+  --grey-cloud: #C7D0DC;
+  --grey-text: #5B6577;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  --radius: 14px;
+  --shadow: 0 12px 32px -12px rgba(27, 42, 74, 0.18);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--sky-pale);
+  color: var(--charcoal);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+}
+
+.wrap {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+a { color: var(--teal-cool); }
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+.site-header {
+  background: var(--navy-deep);
+  color: var(--sky-pale);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+}
+
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.brand-mark {
+  display: inline-flex;
+  color: var(--amber-sun);
+  transform: translateY(3px);
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
+}
+
+.brand-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--grey-cloud);
+  letter-spacing: 0.04em;
+}
+
+.header-time {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--grey-cloud);
+  letter-spacing: 0.05em;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+.hero {
+  background: linear-gradient(180deg, var(--navy-deep) 0%, var(--navy-soft) 55%, var(--sky-pale) 100%);
+  padding: 48px 0 64px;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--panel-white);
+  border-radius: 999px;
+  padding: 8px 10px 8px 20px;
+  box-shadow: var(--shadow);
+  max-width: 620px;
+  margin: 0 auto 28px;
+}
+
+.search-icon { color: var(--grey-text); flex-shrink: 0; }
+
+.search-bar input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  padding: 10px 0;
+  background: transparent;
+  color: var(--charcoal);
+}
+
+.search-bar button[type="submit"] {
+  background: var(--amber-sun);
+  color: var(--navy-deep);
+  border: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 11px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+.search-bar button[type="submit"]:hover { background: #f0b25c; transform: translateY(-1px); }
+.search-bar button[type="submit"]:focus-visible,
+.search-bar #geoBtn:focus-visible,
+.search-bar input:focus-visible { outline: 2px solid var(--teal-cool); outline-offset: 2px; }
+
+#geoBtn {
+  background: transparent;
+  border: 1px solid var(--grey-cloud);
+  color: var(--navy-deep);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+#geoBtn:hover { background: var(--sky-pale); }
+
+.status-msg {
+  text-align: center;
+  color: var(--grey-cloud);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  min-height: 1.2em;
+  margin-bottom: 8px;
+}
+.status-msg.is-error { color: #f4a4a4; }
+
+/* =========================================================
+   PANEL
+   ========================================================= */
+.panel {
+  background: var(--panel-white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 36px;
+  max-width: 780px;
+  margin: 0 auto;
+  animation: rise 0.4s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel-main {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--sky-pale);
+  margin-bottom: 28px;
+}
+
+/* --- Gauge (signature element) --- */
+.gauge-wrap {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  flex-shrink: 0;
+}
+
+.gauge { width: 100%; height: 100%; }
+
+.gauge-track {
+  fill: none;
+  stroke: #EDF0F4;
+  stroke-width: 14;
+}
+
+.gauge-arc {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+}
+
+.gauge-needle {
+  transform-origin: 110px 110px;
+  transform: rotate(var(--deg, -90deg));
+  transition: transform 0.8s cubic-bezier(0.34, 1.2, 0.4, 1);
+}
+.gauge-needle line {
+  stroke: var(--navy-deep);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.gauge-needle circle { fill: var(--navy-deep); }
+
+.gauge-readout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 46px;
+}
+
+.temp-value {
+  font-family: var(--font-mono);
+  font-size: 2.6rem;
+  font-weight: 500;
+  color: var(--navy-deep);
+  line-height: 1;
+}
+.temp-unit {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--grey-text);
+}
+
+.condition-block {
+  text-align: center;
+  min-width: 200px;
+}
+
+.condition-icon { display: flex; justify-content: center; margin-bottom: 6px; color: var(--amber-sun); }
+
+.city-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 4px 0 2px;
+  color: var(--navy-deep);
+}
+
+.condition-desc {
+  margin: 0 0 8px;
+  color: var(--grey-text);
+  text-transform: capitalize;
+}
+
+.feels-like {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--grey-text);
+  margin: 0;
+}
+
+/* --- Stat grid --- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--sky-pale);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--grey-text);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--navy-deep);
+}
+.stat-value small { font-size: 0.7rem; color: var(--grey-text); margin-left: 2px; }
+
+/* =========================================================
+   HOURLY TREND
+   ========================================================= */
+.hourly-section { padding: 8px 0 12px; }
+
+.hourly-chart-card {
+  background: var(--panel-white);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 18px -10px rgba(27,42,74,0.15);
+  padding: 20px 20px 4px;
+  max-width: 780px;
+  margin: 0 auto 16px;
+}
+
+.hourly-chart { width: 100%; height: 120px; display: block; }
+
+.hourly-line {
+  fill: none;
+  stroke: var(--teal-cool);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.hourly-area { fill: url(#hourlyFill); opacity: 0.9; }
+
+.hourly-dot { fill: var(--navy-deep); }
+
+.hourly-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--navy-deep);
+  text-anchor: middle;
+}
+
+.hourly-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  max-width: 780px;
+  margin: 0 auto;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
+}
+
+.hourly-card {
+  flex: 1 0 84px;
+  background: var(--panel-white);
+  border-radius: var(--radius);
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 0 6px 18px -10px rgba(27,42,74,0.15);
+}
+
+.hourly-time {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--grey-text);
+}
+
+.hourly-icon { color: var(--teal-cool); display: flex; justify-content: center; margin: 6px 0; }
+
+.hourly-pop {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--amber-sun);
+}
+
+.hourly-temp {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--navy-deep);
+  margin-top: 2px;
+}
+
+/* =========================================================
+   FORECAST
+   ========================================================= */
+.forecast-section { padding: 8px 0 64px; }
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--navy-deep);
+  margin-bottom: 20px;
+}
+
+.forecast-strip {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.forecast-card {
+  background: var(--panel-white);
+  border-radius: var(--radius);
+  padding: 18px 10px;
+  text-align: center;
+  box-shadow: 0 6px 18px -10px rgba(27,42,74,0.15);
+}
+
+.forecast-day {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--navy-deep);
+}
+
+.forecast-icon { color: var(--teal-cool); margin: 8px 0; display: flex; justify-content: center; }
+
+.forecast-temp {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--charcoal);
+}
+.forecast-temp .lo { color: var(--grey-text); }
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+.site-footer {
+  background: var(--navy-deep);
+  color: var(--grey-cloud);
+  font-size: 0.82rem;
+  padding: 22px 0;
+}
+.footer-inner { text-align: center; }
+.site-footer a { color: var(--amber-sun); text-decoration: none; }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 640px) {
+  .panel { padding: 24px 18px; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .forecast-strip { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
+  .search-bar { padding-left: 14px; }
+  .search-bar button[type="submit"] span { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gauge-needle, .panel { transition: none; animation: none; }
+}
