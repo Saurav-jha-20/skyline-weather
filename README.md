@@ -1,4 +1,4 @@
-# Skyline — Weather Station 🌤️
+# Skyline — Weather Station 
 
 A **5-page** static weather website built with **HTML, CSS, and vanilla JavaScript**. It calls the free [OpenWeatherMap](https://openweathermap.org/) API to show current conditions, an hourly trend, a 5-day outlook, air quality, and an interactive weather map for any city.
 
