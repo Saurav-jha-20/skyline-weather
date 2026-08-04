@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Skyline — Weather Station</title>
-  <meta name="description" content="A live weather lookup station powered by OpenWeatherMap." />
+  <title>Weather Map — Skyline</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
 
-  <!-- ============ HEADER ============ -->
   <header class="site-header">
     <div class="wrap header-inner">
       <div class="brand">
@@ -26,11 +25,11 @@
       </div>
 
       <nav class="main-nav" id="mainNav">
-        <a href="index.html" class="active">Today</a>
+        <a href="index.html">Today</a>
         <a href="hourly.html">Hourly</a>
         <a href="forecast.html">5-Day</a>
         <a href="air-quality.html">Air Quality</a>
-        <a href="map.html">Map</a>
+        <a href="map.html" class="active">Map</a>
       </nav>
 
       <div class="header-right">
@@ -42,11 +41,9 @@
     </div>
   </header>
 
-  <!-- ============ HERO / TOOLBAR ============ -->
   <main>
-    <section class="hero" id="currentSection">
+    <section class="hero">
       <div class="wrap">
-
         <form class="search-bar" id="searchForm" autocomplete="off">
           <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
             <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -69,82 +66,31 @@
 
         <p class="location-label" id="locationLabel">Loading…</p>
         <div id="statusMsg" class="status-msg" role="status"></div>
+      </div>
+    </section>
 
-        <div class="panel" id="weatherPanel" hidden>
-          <div class="panel-main">
-            <div class="gauge-wrap">
-              <svg class="gauge" viewBox="0 0 220 220" aria-hidden="true">
-                <defs>
-                  <linearGradient id="gaugeArc" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#4F8A8B"/>
-                    <stop offset="50%" stop-color="#C7D0DC"/>
-                    <stop offset="100%" stop-color="#E8A33D"/>
-                  </linearGradient>
-                </defs>
-                <circle cx="110" cy="110" r="92" class="gauge-track"/>
-                <path class="gauge-arc" d="M 30 160 A 92 92 0 1 1 190 160" stroke="url(#gaugeArc)"/>
-                <g class="gauge-needle" id="gaugeNeedle">
-                  <line x1="110" y1="110" x2="110" y2="34" />
-                  <circle cx="110" cy="110" r="7" />
-                </g>
-              </svg>
-              <div class="gauge-readout">
-                <span class="temp-value" id="tempValue">--</span>
-                <span class="temp-unit" id="tempUnitLabel">°C</span>
-              </div>
-            </div>
-
-            <div class="condition-block">
-              <div class="condition-icon" id="conditionIcon"></div>
-              <h1 class="city-name" id="cityName">—</h1>
-              <p class="condition-desc" id="conditionDesc">—</p>
-              <p class="feels-like">Feels like <span id="feelsLike">--</span><span id="feelsLikeUnit">°C</span></p>
-            </div>
-          </div>
-
-          <div class="stats-grid">
-            <div class="stat-card">
-              <span class="stat-label">Humidity</span>
-              <span class="stat-value" id="statHumidity">--<small>%</small></span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Wind</span>
-              <span class="stat-value" id="statWind">--<small>km/h</small></span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Pressure</span>
-              <span class="stat-value" id="statPressure">--<small>hPa</small></span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Visibility</span>
-              <span class="stat-value" id="statVisibility">--<small>km</small></span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Dew Point</span>
-              <span class="stat-value" id="statDewPoint">--<small>°C</small></span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Sunrise</span>
-              <span class="stat-value" id="statSunrise">--:--</span>
-            </div>
-            <div class="stat-card">
-              <span class="stat-label">Sunset</span>
-              <span class="stat-value" id="statSunset">--:--</span>
-            </div>
-          </div>
+    <section class="map-section">
+      <div class="wrap">
+        <h2 class="section-title">Weather Map</h2>
+        <div class="map-layer-toggle" id="mapLayerToggle">
+          <button type="button" class="layer-btn active" data-layer="clouds_new">Clouds</button>
+          <button type="button" class="layer-btn" data-layer="precipitation_new">Precipitation</button>
+          <button type="button" class="layer-btn" data-layer="temp_new">Temperature</button>
+          <button type="button" class="layer-btn" data-layer="wind_new">Wind</button>
         </div>
+        <div id="weatherMap" class="weather-map"></div>
       </div>
     </section>
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <p>Built by <span id="footerAuthor">a student</span> as a field project. Weather data by <a href="https://openweathermap.org/" target="_blank" rel="noopener">OpenWeatherMap</a>.</p>
     </div>
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="common.js"></script>
-  <script src="home.js"></script>
+  <script src="map.js"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@
   --panel-white: #FFFFFF;
   --amber-sun: #E8A33D;
   --teal-cool: #4F8A8B;
+  --danger-red: #C1443B;
   --charcoal: #232B3A;
   --grey-cloud: #C7D0DC;
   --grey-text: #5B6577;
@@ -52,7 +53,75 @@ a { color: var(--teal-cool); }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 20px;
   padding: 18px 24px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* --- Nav menu --- */
+.main-nav {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.main-nav a {
+  color: var(--grey-cloud);
+  text-decoration: none;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 14px;
+  border-radius: 999px;
+  transition: background 0.15s ease, color 0.15s ease;
+  white-space: nowrap;
+}
+.main-nav a:hover,
+.main-nav a:focus-visible {
+  background: rgba(255,255,255,0.08);
+  color: var(--sky-pale);
+}
+.main-nav a.active {
+  background: var(--amber-sun);
+  color: var(--navy-deep);
+}
+.main-nav a.active:hover { background: #f0b25c; }
+
+.nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: var(--sky-pale);
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+@media (max-width: 780px) {
+  .main-nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--navy-soft);
+    padding: 10px 24px 16px;
+    display: none;
+    gap: 2px;
+  }
+  .main-nav.is-open { display: flex; }
+  .main-nav a { text-align: left; }
+  .nav-toggle { display: flex; }
+  .site-header { position: relative; }
 }
 
 .brand {
@@ -162,6 +231,67 @@ a { color: var(--teal-cool); }
   margin-bottom: 8px;
 }
 .status-msg.is-error { color: #f4a4a4; }
+
+.location-label {
+  text-align: center;
+  color: var(--grey-cloud);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  margin: 0 0 4px;
+}
+
+/* --- Hero controls: unit toggle + recent chips --- */
+.hero-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  max-width: 620px;
+  margin: 0 auto 20px;
+}
+
+.unit-toggle {
+  display: inline-flex;
+  background: rgba(255,255,255,0.12);
+  border-radius: 999px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+
+.unit-btn {
+  border: none;
+  background: transparent;
+  color: var(--grey-cloud);
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.unit-btn.active { background: var(--amber-sun); color: var(--navy-deep); }
+
+.recent-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chip {
+  background: rgba(255,255,255,0.12);
+  color: var(--sky-pale);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  padding: 6px 13px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.chip:hover { background: rgba(255,255,255,0.22); }
 
 /* =========================================================
    PANEL
@@ -430,6 +560,109 @@ a { color: var(--teal-cool); }
 .forecast-temp .lo { color: var(--grey-text); }
 
 /* =========================================================
+   AIR QUALITY
+   ========================================================= */
+.aqi-section { padding: 8px 0 12px; }
+
+.aqi-card {
+  background: var(--panel-white);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  padding: 28px;
+  max-width: 780px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
+.aqi-badge {
+  flex-shrink: 0;
+  width: 108px;
+  height: 108px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--teal-cool);
+  color: #fff;
+}
+.aqi-badge[data-level="1"] { background: var(--teal-cool); }
+.aqi-badge[data-level="2"] { background: #6FA96A; }
+.aqi-badge[data-level="3"] { background: var(--amber-sun); }
+.aqi-badge[data-level="4"] { background: #D77A3B; }
+.aqi-badge[data-level="5"] { background: var(--danger-red); }
+
+.aqi-number {
+  font-family: var(--font-mono);
+  font-size: 2rem;
+  font-weight: 600;
+  line-height: 1;
+}
+.aqi-label {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-top: 2px;
+}
+
+.aqi-pollutants {
+  flex: 1;
+  min-width: 220px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.aqi-pollutant {
+  background: var(--sky-pale);
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+.aqi-pollutant .stat-label { font-size: 0.68rem; }
+.aqi-pollutant .stat-value { font-size: 0.95rem; }
+
+/* =========================================================
+   WEATHER MAP
+   ========================================================= */
+.map-section { padding: 8px 0 64px; }
+
+.map-layer-toggle {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.layer-btn {
+  background: var(--panel-white);
+  border: 1px solid var(--grey-cloud);
+  color: var(--navy-deep);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.layer-btn.active { background: var(--navy-deep); color: var(--sky-pale); border-color: var(--navy-deep); }
+
+.weather-map {
+  max-width: 780px;
+  height: 360px;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  background: var(--sky-pale);
+}
+
+/* =========================================================
    FOOTER
    ========================================================= */
 .site-footer {
@@ -450,6 +683,9 @@ a { color: var(--teal-cool); }
   .forecast-strip { grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); }
   .search-bar { padding-left: 14px; }
   .search-bar button[type="submit"] span { display: none; }
+  .aqi-card { padding: 22px; }
+  .aqi-pollutants { grid-template-columns: repeat(2, 1fr); }
+  .weather-map { height: 280px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
