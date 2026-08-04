@@ -1,9 +1,13 @@
-S/* =========================================================
+/* =========================================================
    HOURLY PAGE — 24-hour SVG trend chart + hourly cards
    ========================================================= */
 Skyline.init(async (data) => {
+  if (!data) return;
+
   const forecast = await Skyline.fetchForecast(data.coord.lat, data.coord.lon);
-  if (forecast) renderHourly(forecast.list, data.timezone);
+  if (forecast && forecast.list) {
+    renderHourly(forecast.list, forecast.city ? forecast.city.timezone : data.timezone);
+  }
 });
 
 function renderHourly(list, tzOffset) {
@@ -33,29 +37,38 @@ function renderHourly(list, tzOffset) {
   const dots = coords.map((c) => `<circle class="hourly-dot" cx="${c.x.toFixed(1)}" cy="${c.y.toFixed(1)}" r="3.5"/>`).join("");
   const labels = coords.map((c) => `<text class="hourly-label" x="${c.x.toFixed(1)}" y="${(c.y - 10).toFixed(1)}">${c.temp}°</text>`).join("");
 
-  document.getElementById("hourlyChart").innerHTML = `
-    <defs>
-      <linearGradient id="hourlyFill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#4F8A8B" stop-opacity="0.35"/>
-        <stop offset="100%" stop-color="#4F8A8B" stop-opacity="0"/>
-      </linearGradient>
-    </defs>
-    <path class="hourly-area" d="${areaPath}"/>
-    <path class="hourly-line" d="${linePath}"/>
-    ${dots}${labels}
-  `;
+  const chartElem = document.getElementById("hourlyChart");
+  if (chartElem) {
+    chartElem.innerHTML = `
+      <defs>
+        <linearGradient id="hourlyFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4F8A8B" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#4F8A8B" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <path class="hourly-area" d="${areaPath}"/>
+      <path class="hourly-line" d="${linePath}"/>
+      ${dots}${labels}
+    `;
+  }
 
-  document.getElementById("hourlyStrip").innerHTML = points.map((p) => {
-    const timeLabel = Skyline.formatLocalHour(p.dt, tzOffset);
-    const popPercent = Math.round((p.pop || 0) * 100);
-    return `
-      <div class="hourly-card">
-        <div class="hourly-time">${timeLabel}</div>
-        <div class="hourly-icon">${Skyline.getWeatherIcon(p.weather[0].main, 26)}</div>
-        <div class="hourly-pop">${popPercent}% rain</div>
-        <div class="hourly-temp">${Skyline.displayTemp(p.main.temp)}°</div>
-      </div>`;
-  }).join("");
+  const stripElem = document.getElementById("hourlyStrip");
+  if (stripElem) {
+    stripElem.innerHTML = points.map((p) => {
+      const timeLabel = Skyline.formatLocalHour(p.dt, tzOffset);
+      const popPercent = Math.round((p.pop || 0) * 100);
+      return `
+        <div class="hourly-card">
+          <div class="hourly-time">${timeLabel}</div>
+          <div class="hourly-icon">${Skyline.getWeatherIcon(p.weather[0].main, 26)}</div>
+          <div class="hourly-pop">${popPercent}% rain</div>
+          <div class="hourly-temp">${Skyline.displayTemp(p.main.temp)}°</div>
+        </div>`;
+    }).join("");
+  }
 
-  document.getElementById("hourlySection").hidden = false;
+  const sectionElem = document.getElementById("hourlySection");
+  if (sectionElem) {
+    sectionElem.hidden = false;
+  }
 }
