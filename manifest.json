@@ -1,6 +1,7 @@
 {
   "name": "Skyline Weather Station",
   "short_name": "Skyline",
+  "description": "A live weather lookup station powered by OpenWeatherMap.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#0d1b2a",

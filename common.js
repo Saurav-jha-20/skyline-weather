@@ -326,3 +326,15 @@ const Skyline = {
 };
 
 window.Skyline = Skyline;
+
+// ---------------------------------------------------------
+// 11. Register the service worker (makes the site installable
+//     as a PWA and lets it work offline after the first visit)
+// ---------------------------------------------------------
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("service-worker.js").catch((err) => {
+      console.error("Service worker registration failed:", err);
+    });
+  });
+}
