@@ -93,6 +93,24 @@ a { color: var(--teal-cool); }
 }
 .main-nav a.active:hover { background: #f0b25c; }
 
+.install-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--amber-sun);
+  color: var(--navy-deep);
+  border: none;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+.install-btn:hover { background: #f0b25c; transform: translateY(-1px); }
+.install-btn[hidden] { display: none; }
+
 .nav-toggle {
   display: none;
   background: transparent;

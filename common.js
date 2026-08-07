@@ -338,3 +338,38 @@ if ("serviceWorker" in navigator) {
     });
   });
 }
+
+// ---------------------------------------------------------
+// 12. Custom "Install" button
+//     Chrome/Edge fire 'beforeinstallprompt' when the site is
+//     eligible to install. We stop the automatic mini-infobar,
+//     save the event, and reveal our own button instead — the
+//     button only shows up on pages/browsers where it'll work.
+// ---------------------------------------------------------
+let deferredInstallPrompt = null;
+
+window.addEventListener("beforeinstallprompt", (e) => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.hidden = false;
+});
+
+window.addEventListener("appinstalled", () => {
+  deferredInstallPrompt = null;
+  const btn = document.getElementById("installBtn");
+  if (btn) btn.hidden = true;
+});
+
+function wireInstallButton() {
+  const btn = document.getElementById("installBtn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
+    if (!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    btn.hidden = true;
+  });
+}
+wireInstallButton();
